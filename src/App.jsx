@@ -1,19 +1,12 @@
-import "./App.css";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline';
+import { Board } from "./Pages/Board";
 
 function App() {
+ 
   return (
     <>
-      <Box sx={{ backgroundColor: "#fff", display: 'flex', flexDirection: 'column' }}>
-        <Typography color="#222">Formulário</Typography>
-        <TextField />
-        <TextField />
-        <TextField />
-        <Button variant="contained">Botão</Button>
-      </Box>
+      <CssBaseline />
+      <Board />
     </>
   );
 }
