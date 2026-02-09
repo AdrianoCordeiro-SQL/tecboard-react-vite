@@ -4,7 +4,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Container } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Container,
+  FormControl,
+  Grid,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+} from "@mui/material";
 
 const eventCategories = [
   {
@@ -141,16 +151,85 @@ export function Board() {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
           display: "flex",
+          justifyContent: "center",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Typography color="#222">Formulário</Typography>
-        <TextField />
-        <TextField />
-        <TextField />
-        <Button variant="contained">Botão</Button>
+        {/* Formulário */}
+        <Box
+          sx={{
+            backgroundColor: "#ccc",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            width: '100%',
+            maxWidth: '384px'
+          }}
+        >
+
+          <Typography>Preencha para criar um evento</Typography>
+          <Stack spacing={2}>
+            <FormControl fullWidth>
+              <InputLabel
+                shrink
+                htmlFor="name"
+                sx={{ position: "static", transform: "none", mb: 1 }}
+              >
+                Qual o nome do evento?
+              </InputLabel>
+              <OutlinedInput id="name" placeholder="Summer dev hits" />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel
+                shrink
+                htmlFor="date"
+                sx={{ position: "static", transform: "none", mb: 1 }}
+              >
+                Data do evento
+              </InputLabel>
+              <OutlinedInput id="date" placeholder="XX/XX/XXXX" />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel
+                shrink
+                htmlFor="theme"
+                sx={{ position: "static", transform: "none", mb: 1 }}
+              >
+                Tema do evento
+              </InputLabel>
+              <OutlinedInput id="theme" placeholder="Selecione uma opção" />
+            </FormControl>
+
+          </Stack>
+        </Box>
+      </Box>
+
+      <Box sx={{ width: '100%', maxWidth: '1200px' }}>
+    {eventCategories.map((category) => (
+        <Box key={category.name}>
+            <Typography>{category.name}</Typography>
+            <Grid container spacing={2} sx={{ maxWidth: '1200px', mx: 'auto' }}>
+                {category.events.map((event) => (
+                    <Grid item xs={12} sm={6} md={4} key={event.id}>
+                        <Card>
+                            <CardMedia
+                                component={'img'} height='140px' image={event.image} alt={event.name}
+                            />
+                            <CardContent sx={{ flexGrow: 1 }}>
+                                <Typography>{event.name}</Typography>
+                                <Typography>{event.date}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
+    ))}
       </Box>
     </Box>
   );
