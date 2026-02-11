@@ -31,10 +31,12 @@ const theme = createTheme({
         }
       }
     },
+   
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
           height: '36px',
+          color: '#fff', 
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#33353F',
           },
@@ -51,17 +53,22 @@ const theme = createTheme({
           display: 'flex',
           alignItems: 'center',
           fontSize: '16px',
+          color: '#fff', 
           '&::placeholder': {
-            color: '#33353F',
+            color: '#33353F', 
             opacity: 1,
             fontSize: '16px',
           },
         },
       },
     },
-     MuiSelect: {
+  
+    MuiSelect: {
       styleOverrides: {
         root: {
+          '& .MuiSvgIcon-root': { 
+             color: '#fff' 
+          },
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#33353F',
           },
@@ -73,16 +80,20 @@ const theme = createTheme({
             borderWidth: '2px',
           },
           '&.MuiSelect-select.MuiSelect-outlined': {
-            color: '#33353F',
+            color: '#fff', 
             fontSize: '16px',
           },
         },
         select: {
           '&[aria-expanded="false"]': {
-            color: '#33353F',
-            fontSize: '16px',
+             color: '#fff', 
+             fontSize: '16px',
           },
         },
+      
+        icon: {
+            color: '#fff' 
+        }
       },
     },
     MuiInputLabel: {
@@ -104,6 +115,30 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiMenu: {
+        styleOverrides: {
+            paper: {
+                backgroundColor: '#212121', 
+                color: '#fff' 
+            }
+        }
+    },
+    MuiMenuItem: {
+        styleOverrides: {
+            root: {
+                '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)' 
+                },
+                '&.Mui-selected': {
+                    backgroundColor: 'rgba(23, 217, 177, 0.2)', 
+                    '&:hover': {
+                        backgroundColor: 'rgba(23, 217, 177, 0.3)'
+                    }
+                }
+            }
+        }
+    }
   },
   palette: {
     textSecondary: '#33353F'

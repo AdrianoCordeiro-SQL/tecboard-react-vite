@@ -13,9 +13,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete"; 
+import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
 import { eventSchema } from "../schema.js";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+
 
 import tecboardLogo from "../assets/tecboard.svg";
 import bannerImage from "../assets/banner.png";
@@ -131,28 +136,29 @@ const Chip = styled(Box)(({ theme }) => ({
 }));
 
 export function Board() {
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    theme: "",
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm({
+    resolver: zodResolver(eventSchema),
+    defaultValues: {          // Valores iniciais são importantes para arrays
+      name: "",
+      date: "",
+      theme: "",
+      speakers: [{ name: "" }] 
+    }
   });
 
-  const [error, setError] = useState("");
+  // Hook do array
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  }
+  const { fields, append, remove } = useFieldArray({ 
+    control,
+    name: "speakers"
+  });
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const result = eventSchema.safeParse(formData);
-    if (result.success) {
-      console.log(result.data);
-    } else {
-      const firstError = result.error.issues[0];
-      setError(firstError.message);
-    }
+  console.log({ message: errors });
+
+
+  function handleOnSubmit(data) {
+    console.log({ message: data });
   }
 
   return (
@@ -209,7 +215,7 @@ export function Board() {
         {/* Formulário */}
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleOnSubmit)}
           sx={{
             backgroundColor: "#212121",
             width: "100%",
@@ -220,7 +226,6 @@ export function Board() {
           }}
         >
           <Typography>Preencha para criar um evento:</Typography>
-          <Typography>Erro: {error}</Typography>
           <Stack spacing={2}>
             <FormControl fullWidth>
               <InputLabel
@@ -230,14 +235,18 @@ export function Board() {
               >
                 Qual o nome do evento?
               </InputLabel>
-              <OutlinedInput
-                id="name"
+              <Controller
                 name="name"
-                placeholder="Summer dev hits"
-                fullWidth
-                sx={{ height: "36px" }}
-                onChange={handleChange}
-                value={formData.name}
+                control={control}
+                render={({ field }) => (
+                  <OutlinedInput
+                    id="name"
+                    placeholder="Summer dev hits"
+                    fullWidth
+                    sx={{ height: "36px", color: "white" }}
+                    {...field}
+                  />
+                )}
               />
             </FormControl>
 
@@ -249,14 +258,18 @@ export function Board() {
               >
                 Data do evento
               </InputLabel>
-              <OutlinedInput
-                id="date"
+              <Controller
                 name="date"
-                placeholder="XX/XX/XXXX"
-                fullWidth
-                sx={{ height: "36px" }}
-                onChange={handleChange}
-                value={formData.date}
+                control={control}
+                render={({ field }) => (
+                  <OutlinedInput
+                    id="date"
+                    placeholder="XX/XX/XXXX"
+                    fullWidth
+                    sx={{ height: "36px", color: "white" }}
+                    {...field}
+                  />
+                )}
               />
             </FormControl>
 
@@ -264,28 +277,66 @@ export function Board() {
               <InputLabel
                 shrink
                 htmlFor="theme"
-                sx={{ position: "static", transform: "none", mb: 1 }}
+                sx={{ position: "static", transform: "none", mb: 1,  }}
               >
                 Tema do evento
               </InputLabel>
-              <Select
-                id="theme"
+              <Controller
                 name="theme"
-                defaultValue=""
-                displayEmpty
-                fullWidth
-                sx={{ height: "36px" }}
-                onChange={handleChange}
-                value={formData.theme}
-              >
-                <MenuItem value="" disabled>
-                  Selecione uma opção
-                </MenuItem>
-                <MenuItem value="Front-end">Front-end</MenuItem>
-                <MenuItem value="Design">Design</MenuItem>
-                <MenuItem value="Marketing">Marketing</MenuItem>
-              </Select>
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    id="theme"
+                    defaultValue=""
+                    displayEmpty
+                    fullWidth
+                    sx={{ height: "36px" }}
+                    {...field}
+                  >
+                    <MenuItem value="" disabled>
+                      Selecione uma opção
+                    </MenuItem>
+                    <MenuItem value="Front-end">Front-end</MenuItem>
+                    <MenuItem value="Design">Design</MenuItem>
+                    <MenuItem value="Marketing">Marketing</MenuItem>
+                  </Select>
+                )}
+              />
             </FormControl>
+            <Box>
+          <Typography sx={{ mb: 1, color: "rgba(255, 255, 255, 0.7)" }}> 
+            Palestrantes
+          </Typography>
+          
+          <Stack spacing={2}>
+            {fields.map((field, index) => ( // Loop para criar os campos
+              <Stack direction="row" spacing={1} key={field.id} alignItems="center">
+                <OutlinedInput
+                  placeholder="Nome do palestrante"
+                  fullWidth
+                  sx={{ height: "36px", color: "white" }}
+                  {...register(`speakers.${index}.name`)} // Conecta ao formulário
+                />
+                
+                <IconButton 
+                  onClick={() => remove(index)} 
+                  aria-label="remover"
+                  sx={{ color: "#ef5350" }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
+            ))}
+          </Stack>
+
+          <Button
+            startIcon={<AddIcon />}
+            onClick={() => append({ name: "" })} // Adiciona novo campo
+            sx={{ mt: 1, textTransform: "none", color: "#0c0e0d" }}
+          >
+            Adicionar Palestrante
+          </Button>
+        </Box>
 
             <Button type="submit" sx={{ alignSelf: "center" }}>
               Criar evento
