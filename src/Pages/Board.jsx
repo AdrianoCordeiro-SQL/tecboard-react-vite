@@ -14,118 +14,22 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete"; 
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
 import { eventSchema } from "../schema.js";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
-
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import tecboardLogo from "../assets/tecboard.svg";
 import bannerImage from "../assets/banner.png";
-
-const eventCategories = [
-  {
-    name: "Front-end",
-    events: [
-      {
-        id: 1,
-        name: "Workshop React",
-        theme: "Front-end",
-        date: "20/05/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 2,
-        name: "Conference JS",
-        theme: "Front-end",
-        date: "15/06/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 3,
-        name: "Vue.js Masterclass",
-        theme: "Front-end",
-        date: "10/07/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 4,
-        name: "Angular Workshop",
-        theme: "Front-end",
-        date: "25/07/2025",
-        image: "https://placehold.co/236x282",
-      },
-    ],
-  },
-  {
-    name: "Design",
-    events: [
-      {
-        id: 5,
-        name: "UX/UI Design",
-        theme: "Design",
-        date: "05/08/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 6,
-        name: "Figma Masterclass",
-        theme: "Design",
-        date: "12/08/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 7,
-        name: "Design Thinking",
-        theme: "Design",
-        date: "20/08/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 8,
-        name: "Adobe Creative",
-        theme: "Design",
-        date: "30/08/2025",
-        image: "https://placehold.co/236x282",
-      },
-    ],
-  },
-  {
-    name: "Marketing",
-    events: [
-      {
-        id: 9,
-        name: "Marketing Digital",
-        theme: "Marketing",
-        date: "05/09/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 10,
-        name: "SEO Avançado",
-        theme: "Marketing",
-        date: "15/09/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 11,
-        name: "Social Media",
-        theme: "Marketing",
-        date: "25/09/2025",
-        image: "https://placehold.co/236x282",
-      },
-      {
-        id: 12,
-        name: "Growth Hacking",
-        theme: "Marketing",
-        date: "05/10/2025",
-        image: "https://placehold.co/236x282",
-      },
-    ],
-  },
-];
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useState } from "react";
 
 const Chip = styled(Box)(({ theme }) => ({
   display: "inline-flex",
@@ -136,30 +40,64 @@ const Chip = styled(Box)(({ theme }) => ({
 }));
 
 export function Board() {
+  const QueryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm({
+  async function getEvents(page = 0) {
+    const response = await fetch(
+      `http://localhost:3000/events?_page=${page}&_per_page=4`,
+    );
+    return response.json();
+  }
+
+  const { data: eventsData, isLoading } = useQuery({
+    queryKey: ["getEvents", page],
+    queryFn: () => getEvents(page),
+    keepPreviousData: true,
+  });
+
+  async function postEvents(event) {
+    const response = await fetch("http://localhost:3000/events", {
+      method: "POST",
+      body: JSON.stringify(event),
+    });
+    return response.json();
+  }
+
+  const postEventMutation = useMutation({
+    mutationKey: ["postEvents"],
+    mutationFn: postEvents,
+    onSuccess: async () => {
+      await QueryClient.invalidateQueries({ queryKey: ["getEvents"] });
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(eventSchema),
-    defaultValues: {          // Valores iniciais são importantes para arrays
+    defaultValues: {
       name: "",
       date: "",
       theme: "",
-      speakers: [{ name: "" }] 
-    }
+      speakers: [{ name: "" }],
+    },
   });
 
-  // Hook do array
-
-  const { fields, append, remove } = useFieldArray({ 
-    control,
-    name: "speakers"
-  });
+  function handleOnSubmit(data) {
+    postEventMutation.mutate(data);
+    console.log({ message: data });
+  }
 
   console.log({ message: errors });
 
-
-  function handleOnSubmit(data) {
-    console.log({ message: data });
-  }
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "speakers",
+  });
 
   return (
     <Box sx={{ height: "100vh", backgroundColor: "#06151A" }}>
@@ -277,7 +215,7 @@ export function Board() {
               <InputLabel
                 shrink
                 htmlFor="theme"
-                sx={{ position: "static", transform: "none", mb: 1,  }}
+                sx={{ position: "static", transform: "none", mb: 1 }}
               >
                 Tema do evento
               </InputLabel>
@@ -304,39 +242,49 @@ export function Board() {
               />
             </FormControl>
             <Box>
-          <Typography sx={{ mb: 1, color: "rgba(255, 255, 255, 0.7)" }}> 
-            Palestrantes
-          </Typography>
-          
-          <Stack spacing={2}>
-            {fields.map((field, index) => ( // Loop para criar os campos
-              <Stack direction="row" spacing={1} key={field.id} alignItems="center">
-                <OutlinedInput
-                  placeholder="Nome do palestrante"
-                  fullWidth
-                  sx={{ height: "36px", color: "white" }}
-                  {...register(`speakers.${index}.name`)} // Conecta ao formulário
-                />
-                
-                <IconButton 
-                  onClick={() => remove(index)} 
-                  aria-label="remover"
-                  sx={{ color: "#ef5350" }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Stack>
-            ))}
-          </Stack>
+              <Typography sx={{ mb: 1, color: "rgba(255, 255, 255, 0.7)" }}>
+                Palestrantes
+              </Typography>
 
-          <Button
-            startIcon={<AddIcon />}
-            onClick={() => append({ name: "" })} // Adiciona novo campo
-            sx={{ mt: 1, textTransform: "none", color: "#0c0e0d" }}
-          >
-            Adicionar Palestrante
-          </Button>
-        </Box>
+              <Stack spacing={2}>
+                {fields.map(
+                  (
+                    field,
+                    index, // Loop para criar os campos
+                  ) => (
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      key={field.id}
+                      alignItems="center"
+                    >
+                      <OutlinedInput
+                        placeholder="Nome do palestrante"
+                        fullWidth
+                        sx={{ height: "36px", color: "white" }}
+                        {...register(`speakers.${index}.name`)} // Conecta ao formulário
+                      />
+
+                      <IconButton
+                        onClick={() => remove(index)}
+                        aria-label="remover"
+                        sx={{ color: "#ef5350" }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Stack>
+                  ),
+                )}
+              </Stack>
+
+              <Button
+                startIcon={<AddIcon />}
+                onClick={() => append({ name: "" })} // Adiciona novo campo
+                sx={{ mt: 1, textTransform: "none", color: "#0c0e0d" }}
+              >
+                Adicionar Palestrante
+              </Button>
+            </Box>
 
             <Button type="submit" sx={{ alignSelf: "center" }}>
               Criar evento
@@ -355,46 +303,54 @@ export function Board() {
             gap: "64px",
           }}
         >
-          {eventCategories.map((category) => (
-            <Box key={category.name}>
-              <Typography>{category.name}</Typography>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Button
+              onClick={() => setPage(eventsData.prev)}
+              disabled={page === 1}
+            >
+              Página anterior
+            </Button>
 
-              <Grid
-                container
-                spacing={3}
-                sx={{ maxWidth: "1200px", mx: "auto" }}
-              >
-                {category.events.map((event) => (
-                  <Grid item xs={12} sm={6} md={4} key={event.id}>
-                    <Card sx={{ width: "282px" }}>
-                      <CardMedia
-                        component="img"
-                        height="236px"
-                        image={event.image}
-                        alt={event.name}
-                      />
-                      <CardContent
-                        sx={{
-                          flexGrow: 1,
-                          py: 3,
-                          px: 2,
-                          backgroundColor: "#212121",
-                        }}
-                      >
-                        <Chip>
-                          <Typography variant="caption">
-                            {event.theme}
-                          </Typography>
-                        </Chip>
-                        <Typography>{event.date}</Typography>
-                        <Typography>{event.name}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          ))}
+            <Button
+              onClick={() => {
+                if (eventsData.next) {
+                  setPage(eventsData.next);
+                }
+              }}
+              
+            >
+              Próxima página
+            </Button>
+          </Box>
+          <Grid container spacing={3} sx={{ maxWidth: "1200px", mx: "auto" }}>
+            {!isLoading &&
+              eventsData.data?.map((event) => (
+                <Grid item xs={12} sm={6} md={4} key={event.id}>
+                  <Card sx={{ width: "282px" }}>
+                    <CardMedia
+                      component="img"
+                      height="236px"
+                      image={event.image}
+                      alt={event.name}
+                    />
+                    <CardContent
+                      sx={{
+                        flexGrow: 1,
+                        py: 3,
+                        px: 2,
+                        backgroundColor: "#212121",
+                      }}
+                    >
+                      <Chip>
+                        <Typography variant="caption">{event.theme}</Typography>
+                      </Chip>
+                      <Typography>{event.date}</Typography>
+                      <Typography>{event.name}</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+          </Grid>
         </Box>
       </Box>
     </Box>

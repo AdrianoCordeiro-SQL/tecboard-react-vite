@@ -1,0 +1,323 @@
+{
+  "events": [
+    {
+      "id": "1",
+      "name": "Workshop React",
+      "theme": "Front-end",
+      "date": "20/05/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "2",
+      "name": "Conference JS",
+      "theme": "Front-end",
+      "date": "15/06/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "3",
+      "name": "Vue.js Masterclass",
+      "theme": "Front-end",
+      "date": "10/07/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "4",
+      "name": "Angular Workshop",
+      "theme": "Front-end",
+      "date": "25/07/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "5",
+      "name": "UX/UI Design",
+      "theme": "Design",
+      "date": "05/08/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "6",
+      "name": "Figma Masterclass",
+      "theme": "Design",
+      "date": "12/08/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "7",
+      "name": "Design Thinking",
+      "theme": "Design",
+      "date": "20/08/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "8",
+      "name": "Digital Marketing Summit",
+      "theme": "Marketing",
+      "date": "10/09/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "9",
+      "name": "SEO Advanced",
+      "theme": "Marketing",
+      "date": "18/09/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "10",
+      "name": "Content Marketing",
+      "theme": "Marketing",
+      "date": "25/09/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "11",
+      "name": "Social Media Conference",
+      "theme": "Marketing",
+      "date": "05/10/2025",
+      "image": "https://placehold.co/236x282"
+    },
+    {
+      "id": "b2ab",
+      "name": "alura start",
+      "date": "2025-12-12T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "e7e6",
+      "name": "alura start",
+      "date": "2025-12-12T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "2b56",
+      "name": "Alura Start",
+      "date": "2025-12-12T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "c114",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "47d3",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "71f7",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "3cba",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "df65",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "fa00",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "4b44",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "b798",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "f222",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "bfb2",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "6685",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "c227",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "2e40",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "f1d1",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "9da7",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "fdf4",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "983c",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "5dca",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    },
+    {
+      "id": "5cf5",
+      "name": "Alura Start V2",
+      "date": "2026-02-03T03:00:00.000Z",
+      "theme": "Front-end",
+      "speakers": [
+        {
+          "name": "Adriano"
+        }
+      ]
+    }
+  ]
+}
