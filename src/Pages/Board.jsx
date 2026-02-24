@@ -25,11 +25,12 @@ import tecboardLogo from "../assets/tecboard.svg";
 import bannerImage from "../assets/banner.png";
 import {
   QueryClient,
+  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const Chip = styled(Box)(({ theme }) => ({
   display: "inline-flex",
@@ -63,6 +64,25 @@ export function Board() {
   const prevPage = eventsData?.prev ?? null;
   const nextPage = eventsData?.next ?? null;
   const items = eventsData?.data ?? [];
+
+  async function getInfiniteEvents({ pageParam }) {
+    const response = await fetch(
+      `http://localhost:3000/events?_page=${pageParam}&_per_page=4`,
+    );
+    return response.json();
+  }
+
+  const {
+    data: eventsInfiniteData,
+    isPending: isInfinitePending,
+    isError: isInfiniteError,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["getInfiniteQuery"],
+    queryFn: getInfiniteEvents,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
   async function postEvents(event) {
     const response = await fetch("http://localhost:3000/events", {
@@ -357,6 +377,44 @@ export function Board() {
                 </Grid>
               ))}
           </Grid>
+
+          <Grid container spacing={3} sx={{ maxWidth: "1200px", mx: "auto" }}>
+            {!isInfiniteError &&
+              !isInfinitePending &&
+              eventsInfiniteData.pages.map((group, index) => (
+                <React.Fragment key={index}>
+                  {group.data.map((event) => (
+                    <Grid item xs={12} sm={6} md={4} key={event.id}>
+                      <Card sx={{ width: "282px" }}>
+                        <CardMedia
+                          component={"img"}
+                          height="236px"
+                          image={event.image}
+                          alt={event.name}
+                        />
+                        <CardContent
+                          sx={{
+                            flexGrow: 1,
+                            py: 3,
+                            px: 2,
+                            backgroundColor: "#212121",
+                          }}
+                        >
+                          <Chip>
+                            <Typography variant="caption">
+                              {event.theme}
+                            </Typography>
+                          </Chip>
+                          <Typography>{event.date}</Typography>
+                          <Typography variant="h6">{event.name}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </React.Fragment>
+              ))}
+          </Grid>
+          <Button onClick={() => fetchNextPage()}>Carregar mais</Button>
         </Box>
       </Box>
     </Box>
