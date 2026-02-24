@@ -50,11 +50,19 @@ export function Board() {
     return response.json();
   }
 
-  const { data: eventsData, isLoading } = useQuery({
+  const {
+    data: eventsData,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["getEvents", page],
     queryFn: () => getEvents(page),
     keepPreviousData: true,
   });
+
+  const prevPage = eventsData?.prev ?? null;
+  const nextPage = eventsData?.next ?? null;
+  const items = eventsData?.data ?? [];
 
   async function postEvents(event) {
     const response = await fetch("http://localhost:3000/events", {
@@ -305,26 +313,24 @@ export function Board() {
         >
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
-              onClick={() => setPage(eventsData.prev)}
-              disabled={page === 1}
+              type="button"
+              onClick={() => prevPage && setPage(prevPage)}
+              disabled={isFetching || page === 1 || !prevPage}
             >
               Página anterior
             </Button>
 
             <Button
-              onClick={() => {
-                if (eventsData.next) {
-                  setPage(eventsData.next);
-                }
-              }}
-              
+              type="button"
+              onClick={() => nextPage && setPage(nextPage)}
+              disabled={isFetching || !nextPage}
             >
               Próxima página
             </Button>
           </Box>
           <Grid container spacing={3} sx={{ maxWidth: "1200px", mx: "auto" }}>
             {!isLoading &&
-              eventsData.data?.map((event) => (
+              items.map((event) => (
                 <Grid item xs={12} sm={6} md={4} key={event.id}>
                   <Card sx={{ width: "282px" }}>
                     <CardMedia
